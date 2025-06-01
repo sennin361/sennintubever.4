@@ -7,59 +7,116 @@
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icon.png">
   <style>
+    :root {
+      --main-color: #222;
+      --accent-color: #00bcd4;
+      --bg-color: #f8f8f8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      font-family: sans-serif;
-      background: #f0f0f0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-color);
       color: #333;
     }
-    #top-bar {
-      display: flex;
-      align-items: center;
-      padding: 10px;
-      background-color: #222;
+
+    header {
+      background-color: var(--main-color);
       color: white;
+      padding: 15px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
-    #top-bar h1 {
-      margin: 0 20px 0 0;
-      font-size: 1.5em;
+
+    header h1 {
+      margin: 0;
+      font-size: 1.8em;
+      font-weight: bold;
     }
-    #top-bar input {
+
+    #search-container {
+      display: flex;
       flex: 1;
-      padding: 5px;
-      margin-right: 10px;
-      font-size: 1em;
+      margin: 10px;
+      gap: 8px;
     }
-    #top-bar button {
-      margin-left: 5px;
-      padding: 6px 12px;
+
+    #search {
+      flex: 1;
+      padding: 10px;
       font-size: 1em;
+      border-radius: 6px;
+      border: none;
     }
+
+    button {
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0097a7;
+    }
+
     #main-content {
       padding: 20px;
+      text-align: center;
     }
+
     iframe {
       border: none;
     }
+
     .home-button {
       position: fixed;
       top: 10px;
       left: 10px;
-      z-index: 1000;
+      z-index: 9999;
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 1em;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      #search-container {
+        width: 100%;
+        margin-top: 10px;
+      }
     }
   </style>
 </head>
 <body>
-  <div id="top-bar">
+  <header>
     <h1>仙人チューブ</h1>
-    <input id="search" type="text" placeholder="動画を検索...">
-    <button onclick="searchVideo()">再生</button>
-    <button onclick="playGame()">ゲーム</button>
-    <button onclick="showChat()">チャット</button>
-  </div>
+    <div id="search-container">
+      <input id="search" type="text" placeholder="動画を検索...">
+      <button onclick="searchVideo()">再生</button>
+      <button onclick="playGame()">ゲーム</button>
+      <button onclick="showChat()">チャット</button>
+    </div>
+  </header>
 
   <div id="main-content">
-    <p>「仙人チューブ」へようこそ！<br>上の検索バーからYouTube動画を再生できます。</p>
+    <p style="font-size: 1.2em;">ようこそ、仙人チューブへ。<br>検索でYouTube、ゲーム、チャットもこの1ページで完結。</p>
   </div>
 
   <script>
@@ -86,10 +143,10 @@
     }
 
     function showIframe(url) {
-      document.getElementById('top-bar').style.display = 'none';
+      document.querySelector('header').style.display = 'none';
       document.getElementById('main-content').innerHTML = `
         <button class="home-button" onclick="location.reload()">ホーム</button>
-        <iframe src="${url}" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;"></iframe>
+        <iframe src="${url}" style="width:100vw; height:100vh;"></iframe>
       `;
     }
   </script>
