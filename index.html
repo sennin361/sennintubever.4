@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>仙人チューブ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.png">
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #f0f0f0;
+      color: #333;
+    }
+    #top-bar {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      background-color: #222;
+      color: white;
+    }
+    #top-bar h1 {
+      margin: 0 20px 0 0;
+      font-size: 1.5em;
+    }
+    #top-bar input {
+      flex: 1;
+      padding: 5px;
+      margin-right: 10px;
+      font-size: 1em;
+    }
+    #top-bar button {
+      margin-left: 5px;
+      padding: 6px 12px;
+      font-size: 1em;
+    }
+    #main-content {
+      padding: 20px;
+    }
+    iframe {
+      border: none;
+    }
+    .home-button {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  <div id="top-bar">
+    <h1>仙人チューブ</h1>
+    <input id="search" type="text" placeholder="動画を検索...">
+    <button onclick="searchVideo()">再生</button>
+    <button onclick="playGame()">ゲーム</button>
+    <button onclick="showChat()">チャット</button>
+  </div>
+
+  <div id="main-content">
+    <p>「仙人チューブ」へようこそ！<br>上の検索バーからYouTube動画を再生できます。</p>
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('Service Worker registered'));
+    }
+
+    function searchVideo() {
+      const query = document.getElementById('search').value.trim();
+      if (!query) return;
+      const embedUrl = `https://www.youtube-nocookie.com/embed?listType=search&list=${encodeURIComponent(query)}`;
+      showIframe(embedUrl);
+    }
+
+    function playGame() {
+      const gameUrl = "https://wkt-uuiv.onrender.com/game/games/snowrider";
+      showIframe(gameUrl);
+    }
+
+    function showChat() {
+      const chatUrl = "https://senninsystems.onrender.com";
+      showIframe(chatUrl);
+    }
+
+    function showIframe(url) {
+      document.getElementById('top-bar').style.display = 'none';
+      document.getElementById('main-content').innerHTML = `
+        <button class="home-button" onclick="location.reload()">ホーム</button>
+        <iframe src="${url}" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;"></iframe>
+      `;
+    }
+  </script>
+</body>
+</html>
